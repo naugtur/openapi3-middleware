@@ -1,0 +1,38 @@
+{
+  "name": "openapi3-middleware",
+  "version": "1.0.0",
+  "description": "validate requests against your openapi3 definition",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run mocha && npm run lint ",
+    "lint": "standard --fix *.js && eslint . --ext js",
+    "mocha": "mocha test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naugtur/openapi3-middleware.git"
+  },
+  "keywords": [],
+  "author": "naugtur@gmail.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/naugtur/openapi3-middleware/issues"
+  },
+  "homepage": "https://github.com/naugtur/openapi3-middleware#readme",
+  "files": [
+    "/index.js",
+    "/validate.js"
+  ],
+  "dependencies": {
+    "debug": "^4.1.1",
+    "oas3-chow-chow": "^0.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "eslint-plugin-security": "^1.4.0",
+    "mocha": "^6.0.1",
+    "openapi-schema-validator": "^3.0.3",
+    "should": "^13.2.3",
+    "standard": "^12.0.1"
+  }
+}
