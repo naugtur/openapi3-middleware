@@ -1,5 +1,6 @@
 # openapi3-middleware
 validate requests against your openapi3 definition 
+
 [![npm](https://img.shields.io/npm/v/openapi3-middleware.svg?style=flat)](https://www.npmjs.com/package/openapi3-middleware)
 
 ```
