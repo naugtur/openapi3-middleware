@@ -22,7 +22,7 @@ function customError ({ code, message, meta }) {
 }
 
 function routePathMatchesDefinition (path, pattern) {
-  return path.replace(':', '') === pattern.replace(/{|}/g, '')
+  return path.replace(/:/g, "").replace(/\?$/, "") === pattern.replace(/{|}/g, '')
 }
 
 function validateRequestAttributes (chow, req) {
