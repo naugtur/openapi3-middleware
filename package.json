@@ -1,6 +1,6 @@
 {
   "name": "openapi3-middleware",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "validate requests against your openapi3 definition",
   "main": "index.js",
   "scripts": {
