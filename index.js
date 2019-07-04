@@ -5,8 +5,8 @@ module.exports = {
   validator
 }
 
-function validator (apiDefinition) {
-  const chow = new ChowChow(apiDefinition)
+function validator (apiDefinition, options = {}) {
+  const chow = new ChowChow(apiDefinition, options.chowchowOptions)
 
   const paths = apiDefinition.paths
   const operationsMapping = Object.keys(paths).reduce((acc, path) => {
@@ -42,6 +42,10 @@ function validator (apiDefinition) {
     validateRequest (req, operationId) {
       const operationAttributes = getMapping(operationId)
       return validate.validateRequest({ req, operationAttributes, chow })
+    },
+    validateResponse (res, operationId, overrides = { path: undefined }) {
+      const operationAttributes = getMapping(operationId)
+      return validate.validateResponse({ res, operationAttributes, chow, path: overrides.path })
     },
     expressMiddleware (operationId) {
       return middlewareRecipe(operationId, (err, res, next) => next(err))

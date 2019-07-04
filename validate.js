@@ -1,9 +1,11 @@
 const errorCodes = {
   request_route_error: 'request_route_error',
-  request_schema_error: 'request_schema_error'
+  request_schema_error: 'request_schema_error',
+  response_schema_error: 'response_schema_error'
 }
 module.exports = {
-  validateRequest
+  validateRequest,
+  validateResponse
 }
 
 function getErrorMessage (err) {
@@ -22,7 +24,7 @@ function customError ({ code, message, meta }) {
 }
 
 function routePathMatchesDefinition (path, pattern) {
-  return path.replace(/:/g, "").replace(/\?$/, "") === pattern.replace(/{|}/g, '')
+  return path.replace(/:/g, '').replace(/\?$/, '') === pattern.replace(/{|}/g, '')
 }
 
 function validateRequestAttributes (chow, req) {
@@ -43,16 +45,27 @@ function validateRequestAttributes (chow, req) {
   }
 }
 
-function validateRequest ({ req, operationAttributes, chow }) {
-  if (!operationAttributes) {
+function validateResponseAttributes (chow, res, { method, path }) {
+  try {
+    return chow.validateResponse(path, {
+      status: '' + res.statusCode,
+      method: method,
+      body: res.body,
+      header: res.headers || {}
+    })
+  } catch (err) {
+    console.log(err)
+    const errorMessage = getErrorMessage(err)
     throw customError({
-      meta: {
-        code: 500
-      },
-      message: 'Specified operationId was not found in API definition',
-      code: errorCodes.request_route_error
+      meta: err.meta,
+      message: errorMessage,
+      code: errorCodes.response_schema_error
     })
   }
+}
+
+function validateRequest ({ req, operationAttributes, chow }) {
+  requireAttributes(operationAttributes)
   if (operationAttributes.method.toLowerCase() !== req.method.toLowerCase()) {
     throw customError({
       meta: {
@@ -72,4 +85,25 @@ function validateRequest ({ req, operationAttributes, chow }) {
     })
   }
   return validateRequestAttributes(chow, req)
+}
+
+function requireAttributes (operationAttributes) {
+  if (!operationAttributes) {
+    throw customError({
+      meta: {
+        code: 500
+      },
+      message: 'Specified operationId was not found in API definition',
+      code: errorCodes.request_route_error
+    })
+  }
+}
+
+function validateResponse ({ res, operationAttributes, chow, path }) {
+  requireAttributes(operationAttributes)
+
+  return validateResponseAttributes(chow, res, {
+    method: operationAttributes.method,
+    path: path || operationAttributes.path.replace(/{[^}]*}/g, '1')
+  })
 }

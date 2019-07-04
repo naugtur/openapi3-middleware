@@ -67,4 +67,38 @@ describe('validator', () => {
       }
     }))
   })
+  it('should not throw when called on a correct response', () => {
+    validatorInstance.validateResponse({
+      body: {id:11,name:"bob"},
+      statusCode: 200,
+      method: 'get',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }, 'showPetById',{path: '/pet/1'})
+    validatorInstance.validateResponse({
+      statusCode: 201,
+      method: 'post',
+      headers: {
+      }
+    }, 'updatePets',{path: '/pet/1'})
+  })
+  it('should throw when response is invalid', () => {
+    assert.throws(() => validatorInstance.validateResponse({
+      body: {id:11,name:"bob"},
+      statusCode: 200,
+      method: 'get',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }, 'not a correct id'))
+    assert.throws(() => validatorInstance.validateResponse({
+      body: {id:11,wrongField:"bob"},
+      statusCode: 200,
+      method: 'get',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }))
+  })
 })

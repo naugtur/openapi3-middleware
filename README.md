@@ -29,6 +29,17 @@ app.get(validatorInstance.expressMiddlewareAutorespondJson(operationId), handler
 // Express middleware
 app.get(validatorInstance.expressMiddleware(operationId), handlerFunction)
   // propagates an error, so custom response can be built in an express error handler
+
+// Validating responses BETA
+const req = {
+      body: {<parsed JSON>},
+      statusCode: 200,
+      method: 'get',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }
+validatorInstance.validateResponse(req, operationId, { path: "the path from the request - to match operationId" }) 
 ```
 
 ### Expected format of req object
