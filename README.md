@@ -31,7 +31,7 @@ app.get(validatorInstance.expressMiddleware(operationId), handlerFunction)
   // propagates an error, so custom response can be built in an express error handler
 
 // Validating responses BETA
-const req = {
+const res = {
       body: {<parsed JSON>},
       statusCode: 200,
       method: 'get',
@@ -39,7 +39,7 @@ const req = {
         'content-type': 'application/json'
       }
     }
-validatorInstance.validateResponse(req, operationId, { path: "the path from the request - to match operationId" }) 
+validatorInstance.validateResponse(res, operationId, { path: "the path from the request - to match operationId" }) 
 ```
 
 ### Expected format of req object
